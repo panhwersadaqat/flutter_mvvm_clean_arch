@@ -16,6 +16,8 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Center(
         child: InkWell(
           onTap: (){
+            Utils.flushBarErrorMessage('Hello World!', context);
+            Utils.snackBar("Hello World!", context);
             Utils.toastMessage('Hello World');
            // Navigator.pushNamed(context, RoutesName.home);
           },
