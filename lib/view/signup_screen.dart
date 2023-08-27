@@ -6,20 +6,24 @@ import 'package:flutter_mvvm_clearn_arch/view_model/auth_viewmodel.dart';
 import '../res/components/round_button.dart';
 import 'package:provider/provider.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignUpScreenState extends State<SignUpScreen> {
 
   ValueNotifier<bool> obscurePassword = ValueNotifier<bool>(true);
 
+  TextEditingController nameController = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
+  FocusNode nameFocus = FocusNode();
+  FocusNode phoneFocus = FocusNode();
   FocusNode emailFocus = FocusNode();
   FocusNode passwordFocus = FocusNode();
 
@@ -29,7 +33,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
     obscurePassword.dispose();
     emailController.dispose();
+    phoneController.dispose();
+    nameController.dispose();
     passwordController.dispose();
+    nameFocus.dispose();
+    phoneFocus.dispose();
     emailFocus.dispose();
     passwordFocus.dispose();
   }
@@ -45,6 +53,19 @@ class _LoginScreenState extends State<LoginScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             TextFormField(
+              controller: nameController,
+              focusNode: nameFocus,
+              keyboardType: TextInputType.name,
+              decoration: const InputDecoration(
+                hintText: 'Full name',
+                labelText: 'Full name',
+                prefixIcon: Icon(Icons.person_2_outlined),
+              ),
+              onFieldSubmitted: (value){
+                Utils.fieldFocus(context, nameFocus, emailFocus);
+              },
+            ),
+            TextFormField(
               controller: emailController,
               focusNode: emailFocus,
               keyboardType: TextInputType.emailAddress,
@@ -54,10 +75,22 @@ class _LoginScreenState extends State<LoginScreen> {
                 prefixIcon: Icon(Icons.email_outlined),
               ),
               onFieldSubmitted: (value){
-                Utils.fieldFocus(context, emailFocus, passwordFocus);
+                Utils.fieldFocus(context, emailFocus, phoneFocus);
               },
             ),
-
+            TextFormField(
+              controller: phoneController,
+              focusNode: phoneFocus,
+              keyboardType: TextInputType.phone,
+              decoration: const InputDecoration(
+                hintText: 'Phone',
+                labelText: 'Phone',
+                prefixIcon: Icon(Icons.phone_outlined),
+              ),
+              onFieldSubmitted: (value){
+                Utils.fieldFocus(context, phoneFocus, passwordFocus);
+              },
+            ),
             ValueListenableBuilder(
               valueListenable: obscurePassword,
               builder: (context, value, child) {
@@ -67,50 +100,56 @@ class _LoginScreenState extends State<LoginScreen> {
                   focusNode: passwordFocus,
 
                   decoration:   InputDecoration(
-                  hintText: 'Password',
-                  labelText: 'Password',
-                  prefixIcon: Icon(Icons.lock_outline),
-                  suffixIcon: InkWell(
-                    onTap: (){
-                      obscurePassword.value = !obscurePassword.value;
-                    },
+                    hintText: 'Password',
+                    labelText: 'Password',
+                    prefixIcon: Icon(Icons.lock_outline),
+                    suffixIcon: InkWell(
+                      onTap: (){
+                        obscurePassword.value = !obscurePassword.value;
+                      },
                       child: Icon(
-                        obscurePassword.value ? Icons.visibility_off_outlined:
-                        Icons.visibility_outlined
+                          obscurePassword.value ? Icons.visibility_off_outlined:
+                          Icons.visibility_outlined
                       ),
+                    ),
                   ),
-                ),
                 );
               },
 
             ),
             SizedBox(height: height * .085),
             RoundButton(
-               title: 'LogIn',
-             loading: authViewModel.loading,
-             onPress: (){
-                if(emailController.text.isEmpty) {
+              title: 'Register',
+              loading: authViewModel.loadingSignUp,
+              onPress: (){
+                if(nameController.text.isEmpty) {
+                  Utils.flushBarErrorMessage('Please enter full name', context);
+                }else if(emailController.text.isEmpty) {
                   Utils.flushBarErrorMessage('Please enter email', context);
+                }else if(phoneController.text.isEmpty) {
+                  Utils.flushBarErrorMessage('Please enter phone no', context);
                 }else if(passwordController.text.isEmpty) {
                   Utils.flushBarErrorMessage('Please enter Password', context);
                 }else {
                   Map data = {
+                    'name': nameController.text.toString(),
                     'email': emailController.text.toString(),
+                    'phone': phoneController.text.toString(),
                     'password': passwordController.text.toString(),
                   };
                   if(kDebugMode) {
                     print(data);
                   }
-                  authViewModel.loginApi(data, context);
+                  authViewModel.registerApi(data, context);
                 }
-             },
-             ),
+              },
+            ),
             SizedBox(height: height * .02),
             InkWell(
-              onTap:() {
-                Navigator.pushNamed(context, RoutesName.signup);
+              onTap: () {
+                Navigator.pushNamed(context, RoutesName.login);
               },
-              child: Text("Don't have an account? Sign Up"),
+              child: Text("Already have an account? Sign Up"),
             ),
           ],
         ),
