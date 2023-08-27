@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mvvm_clearn_arch/utils/routes/routes.dart';
 import 'package:flutter_mvvm_clearn_arch/utils/routes/routes_name.dart';
 import 'package:flutter_mvvm_clearn_arch/view/login_screen.dart';
+import 'package:flutter_mvvm_clearn_arch/view/onboarding/onboarding_screen.dart';
 import 'package:flutter_mvvm_clearn_arch/view_model/auth_viewmodel.dart';
 import 'package:provider/provider.dart';
 
@@ -27,9 +28,16 @@ class MyApp extends StatelessWidget {
             primarySwatch:Colors.blue,
             useMaterial3: true,
           ),
-          initialRoute: RoutesName.login,
+          initialRoute: RoutesName.onboarding,
           onGenerateRoute: Routes.generateRoute,
         ),
     );
   }
+/*  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: OnboardingScreen(),
+    );
+  }*/
 }
