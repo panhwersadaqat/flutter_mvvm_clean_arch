@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mvvm_clearn_arch/utils/routes/routes_name.dart';
-import 'package:flutter_mvvm_clearn_arch/utils/utils.dart';
 import 'package:flutter_mvvm_clearn_arch/view_model/user_viewmodel.dart';
 
 import 'login_screen.dart';
