@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mvvm_clearn_arch/utils/routes/routes_name.dart';
@@ -108,9 +110,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   }else if(passwordController.text.isEmpty) {
                     Utils.flushBarErrorMessage('Please enter Password', context);
                   }else {
-                    Map data = {
-                      'email': emailController.text.toString(),
-                      'password': passwordController.text.toString(),
+
+                    final Map<String, String> data = {
+                      'email': emailController.text,
+                      'password': passwordController.text,
                     };
                     if(kDebugMode) {
                       print(data);

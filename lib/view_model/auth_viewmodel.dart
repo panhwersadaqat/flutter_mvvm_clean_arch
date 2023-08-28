@@ -3,6 +3,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_mvvm_clearn_arch/repository/auth_repository.dart';
 import 'package:flutter_mvvm_clearn_arch/utils/routes/routes_name.dart';
 import 'package:flutter_mvvm_clearn_arch/utils/utils.dart';
+import 'package:flutter_mvvm_clearn_arch/view_model/user_viewmodel.dart';
+
+import '../model/user_model.dart';
 
 class AuthViewModel with ChangeNotifier {
 
@@ -25,18 +28,29 @@ class AuthViewModel with ChangeNotifier {
 
   Future<void> loginApi(dynamic data, BuildContext context) async {
     setLoading(true);
-    repository.loginApi(data).then((value){
+    repository.loginApi(data).then((response) {
       setLoading(false);
-      Utils.flushBarErrorMessage('Login Successfully', context);
-      Navigator.pushNamed(context, RoutesName.home);
-    }).onError((error, stackTrace){
+      if (response['status'] == 200 && response['data'] != null) {
+        Navigator.pushNamed(context, RoutesName.home);
+        // Convert the API response data to a UserModel object
+        UserModel user = UserModel.fromJson(response);
+        UserViewModel viewModel = UserViewModel();
+        viewModel.saveUser(user);
+      } else {
+        Utils.flushBarErrorMessage('Login Failed', context);
+        print(response.toString());
+      }
+    }).onError((error, stackTrace) {
       setLoading(false);
-      if(kDebugMode) {
+      if (kDebugMode) {
         Utils.flushBarErrorMessage('Login Failed', context);
         print(error.toString());
       }
     });
   }
+
+
+
 
   Future<void> registerApi(dynamic data, BuildContext context) async {
     setLoadingSignUp(true);

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mvvm_clearn_arch/utils/routes/routes_name.dart';
 import 'package:flutter_mvvm_clearn_arch/view/login_screen.dart';
+import 'package:flutter_mvvm_clearn_arch/view_model/service/onboarding_service.dart';
 import 'size_config.dart';
 import 'onboarding_contents.dart';
 
@@ -13,7 +14,7 @@ class OnboardingScreen extends StatefulWidget {
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
   late PageController _controller;
-
+  OnBoardingService onBoardingService = OnBoardingService();
   @override
   void initState() {
     _controller = PageController();
@@ -120,13 +121,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           child: ElevatedButton(
                             onPressed: () {
                               //Navigator.pushNamed(context, RoutesName.login);
-                              Navigator.pushAndRemoveUntil<dynamic>(
+                              /*Navigator.pushAndRemoveUntil<dynamic>(
                                 context,
                                 MaterialPageRoute<dynamic>(
                                   builder: (BuildContext context) => LoginScreen(),
                                 ),
                                     (route) => false,//if you want to disable back feature set to false
-                              );
+                              );*/
+                              onBoardingService.checkAuthentication(context);
                             },
                             child: const Text(
                                 "START",
@@ -157,13 +159,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                 onPressed: () {
                                   //_controller.jumpToPage(2);
                                   //Navigator.pushNamed(context, RoutesName.login);
-                                  Navigator.pushAndRemoveUntil<dynamic>(
+                                  /*Navigator.pushAndRemoveUntil<dynamic>(
                                     context,
                                     MaterialPageRoute<dynamic>(
                                       builder: (BuildContext context) => LoginScreen(),
                                     ),
                                         (route) => false,//if you want to disable back feature set to false
-                                  );
+                                  );*/
+                                  onBoardingService.checkAuthentication(context);
 
                                 },
                                 child: const Text(

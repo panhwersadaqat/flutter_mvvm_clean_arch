@@ -4,6 +4,7 @@ import 'package:flutter_mvvm_clearn_arch/utils/routes/routes_name.dart';
 import 'package:flutter_mvvm_clearn_arch/view/login_screen.dart';
 import 'package:flutter_mvvm_clearn_arch/view/onboarding/onboarding_screen.dart';
 import 'package:flutter_mvvm_clearn_arch/view_model/auth_viewmodel.dart';
+import 'package:flutter_mvvm_clearn_arch/view_model/user_viewmodel.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -20,6 +21,9 @@ class MyApp extends StatelessWidget {
         providers: [
           ChangeNotifierProvider(
               create: (_) => AuthViewModel()
+          ),
+          ChangeNotifierProvider(
+              create: (_) => UserViewModel()
           ),
         ],
         child : MaterialApp(

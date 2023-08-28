@@ -21,19 +21,24 @@ class NetworkApiService extends BaseApiService {
     return responseJson;
   }
 
+
   @override
   Future getPostApiResponse(String url, dynamic data) async {
     dynamic responseJson;
 
     try {
 
-      Response response = await post(
-          Uri.parse(url)
-      ).timeout(
-          const Duration(seconds: 10)
-      );
+      final request = MultipartRequest('POST', Uri.parse(url));
 
-      responseJson = returnResponse(response);
+      // Add form fields
+      request.fields.addAll(data);
+
+      // Send the request and wait for the response
+      final response = await request.send();
+      final responseStream = await response.stream.bytesToString();
+
+      // Process the response
+      responseJson = json.decode(responseStream);
     }on SocketException {
       throw FetchDataException('No Internet Connection');
     }
