@@ -1,7 +1,6 @@
 class ApiUrl {
 
-  //static var baseUrl = 'https://reqres.in';
-  static var baseUrl = 'https://thahabi.net/golden/api/user';
+  static var baseUrl = '';
 
   static var login = baseUrl+'/login';
 
